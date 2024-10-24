@@ -10,7 +10,7 @@ export default function ResidentListScreen({navigation}) {
     
     const fetchPatients= async()=> {
       try{
-        fetch("https://dd6a-2607-fea8-33dc-6900-704d-e0f6-63f6-e8dd.ngrok-free.app/api/patient/fetch").then(response=>response.json()).then(data=>{
+       await fetch("https://958b-2607-fea8-33dc-6900-704d-e0f6-63f6-e8dd.ngrok-free.app/api/patient/fetch").then(response=>response.json()).then(data=>{
               //console.log(data)
           setPatients(data)
         })
@@ -33,7 +33,7 @@ export default function ResidentListScreen({navigation}) {
   );
 
   const handleAddResident = ()=>{
-    navigation.navigate('AddPatient');
+    navigation.navigate('NewPatient');
   }
 
   return (

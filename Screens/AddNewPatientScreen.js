@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+import { Checkbox } from 'react-native-paper';
 
 export default function AddNewPatientScreen() {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [healthStatus, setHealthStatus] = useState('');
   const [healthConditions, setHealthConditions] = useState('');
-  const [photo, setPhoto] = useState(null);
 
   const handleSave = () => {
     const newPatient = {
@@ -19,11 +18,6 @@ export default function AddNewPatientScreen() {
     };
     console.log(newPatient); 
     alert('Patient Saved!');
-  };
-
-  const handleUploadPhoto = () => {
-  
-    alert('Photo upload feature not implemented.');
   };
 
   return (
@@ -48,10 +42,10 @@ export default function AddNewPatientScreen() {
       />
 
       <Text>Health Status</Text>
-      <RNPickerSelect
+      <Checkbox
         style={pickerSelectStyles}
-        onValueChange={(value) => setHealthStatus(value)}
-        items={[
+        onPress={(value) => setHealthStatus(value)}
+        status={[
           { label: 'Normal', value: 'Normal' },
           { label: 'Critical', value: 'Critical' },
         ]}
@@ -69,7 +63,7 @@ export default function AddNewPatientScreen() {
       />
 
       <Text>Upload Photo</Text>
-      <TouchableOpacity onPress={handleUploadPhoto}>
+      <TouchableOpacity >
         <Text style={styles.link}>Choose File</Text>
       </TouchableOpacity>
 
