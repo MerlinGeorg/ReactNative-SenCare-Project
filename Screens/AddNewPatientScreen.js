@@ -33,7 +33,7 @@ export default function AddNewPatientScreen({ route, navigation }) {
       room_number: parseInt(roomNumber),
     };
 
-    console.log(newPatient);
+    //console.log(newPatient);
 
     try {
       const response = await axios.post(
