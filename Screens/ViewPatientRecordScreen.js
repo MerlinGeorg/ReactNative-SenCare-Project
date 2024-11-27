@@ -9,7 +9,7 @@ export default function ViewPatientRecordScreen({ route, navigation }) {
 
   const fetchClinicalData = async () => {
     try {
-      const response = await fetch(`https://b5a2-2607-fea8-33dc-6900-f946-21ba-d5e0-e6a5.ngrok-free.app/api/patient/fetch/${patientId}/clinical-data`);
+      const response = await fetch(`https://b638-2607-fea8-33dc-6900-ecd6-7728-6116-2d6c.ngrok-free.app/api/patient/fetch/${patientId}/clinical-data`);
       const data = await response.json();
     //  console.log(data);
       setClinicalData(data);  // Update the state with the new data

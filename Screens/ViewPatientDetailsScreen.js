@@ -9,7 +9,7 @@ const PatientDetailsScreen = ({ route, navigation }) => {
   useEffect(() => {
     const fetchPatientDetails= async()=> {
       try{
-        await fetch(`https://b5a2-2607-fea8-33dc-6900-f946-21ba-d5e0-e6a5.ngrok-free.app/api/patient/fetch/${patientId}`).then(response=>response.json()).then(data=>{
+        await fetch(`https://b638-2607-fea8-33dc-6900-ecd6-7728-6116-2d6c.ngrok-free.app/api/patient/fetch/${patientId}`).then(response=>response.json()).then(data=>{
              // console.log(data)
           setPatient(data)
         })
@@ -42,8 +42,7 @@ const PatientDetailsScreen = ({ route, navigation }) => {
       <Text>Admission Number: {patient.admission_number}</Text>
       <Text>Room Number: {patient.room_number}</Text>
 
-      <Text style={styles.sectionHeader}>Health Conditions:</Text>
-      <Text>{patient.health_conditions}</Text>
+      <Text style={styles.sectionHeader}>Health Conditions: {patient.health_conditions}</Text>
 
       </>)}
 
