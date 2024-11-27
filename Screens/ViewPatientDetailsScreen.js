@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import moment from 'moment';
 
 const PatientDetailsScreen = ({ route, navigation }) => {
   const patientId = route.params.patientId;
@@ -9,7 +10,7 @@ const PatientDetailsScreen = ({ route, navigation }) => {
   useEffect(() => {
     const fetchPatientDetails= async()=> {
       try{
-        await fetch(`https://b638-2607-fea8-33dc-6900-ecd6-7728-6116-2d6c.ngrok-free.app/api/patient/fetch/${patientId}`).then(response=>response.json()).then(data=>{
+        await fetch(`https://9f9b-2607-fea8-33dc-6900-ecd6-7728-6116-2d6c.ngrok-free.app/api/patient/fetch/${patientId}`).then(response=>response.json()).then(data=>{
              // console.log(data)
           setPatient(data)
         })
@@ -31,14 +32,14 @@ const PatientDetailsScreen = ({ route, navigation }) => {
       <>
       
       <Image
-        source={{ uri: patient.photo }} 
+        source={{ uri: patient.photo ? patient.photo: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" }} 
         style={styles.patientImage}
       />
 
       <Text style={styles.header}>{patient.name}</Text>
       <Text>Age: {patient.age}</Text>
       <Text>Health Status: {patient.health_status}</Text>
-      <Text>Admission Date: {patient.admission_date}</Text>
+      <Text>Admission Date: { moment(patient.admission_date).format("MM/DD/YYYY") }</Text>
       <Text>Admission Number: {patient.admission_number}</Text>
       <Text>Room Number: {patient.room_number}</Text>
 

@@ -21,6 +21,7 @@ export default function App() {
       <Stack.Screen name='Login' component={LoginScreen}/>
       <Stack.Screen name='Dashboard' component={DashboardScreen}/>
       <Stack.Screen name='TaskDetails' component={TaskDetailsScreen}/>
+      <Stack.Screen name='NewPatient' component={AddNewPatientScreen}/>
       <Stack.Screen name='ResidentList' component={ResidentListScreen}/>
       <Stack.Screen name='PatientDetails' component={ViewPatientDetailsScreen}/>
       <Stack.Screen name='NewPatientRecord' component={AddNewPatientRecordScreen}/>

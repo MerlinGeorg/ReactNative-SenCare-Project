@@ -60,11 +60,11 @@ export default function DashboardScreen({ navigation }) {
         title="Health Monitoring"
       />
 
-      <Button
+      {/* <Button
         style={styles.button}
         onPress={() => navigation.navigate("ResidentList")}
         title="Documentation"
-      />
+      /> */}
     </View>
   );
 }

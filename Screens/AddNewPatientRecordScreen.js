@@ -40,7 +40,7 @@ const NewPatientRecordScreen = ({ route, navigation }) => {
 
   try {
     // Send the data to the backend API
-    const response = await fetch(`https://b5a2-2607-fea8-33dc-6900-f946-21ba-d5e0-e6a5.ngrok-free.app/api/patient/create/${patientId}/clinical-data`, {
+    const response = await fetch(`https://9f9b-2607-fea8-33dc-6900-ecd6-7728-6116-2d6c.ngrok-free.app/api/patient/create/${patientId}/clinical-data`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
