@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   Image,
   Platform,
-  PermissionsAndroid
+  PermissionsAndroid,
+  Alert
 } from "react-native";
 import { RadioButton } from "react-native-paper";
 import axios from "axios";
@@ -26,7 +27,29 @@ export default function AddNewPatientScreen({ route, navigation }) {
 
   const { refreshPatients } = route.params;
 
+  //validation
+  const validateForm = () => {
+    if(!name.trim()){
+      Alert.alert("Validation Error", "Name is required");
+      return false;
+    }
+
+    if(!age || isNaN(age) ||parseInt(age) <=0){
+      Alert.alert("Validation Error", "Please enter a valid age.");
+      return false;
+    }
+
+    if(!healthStatus){
+      Alert.alert("Validation Error", "Please select a health status.");
+      return false;
+    }
+  }
+
+
   const handleSave = async () => {
+
+    if(!validateForm()) return;
+
     const newPatient = {
       name,
       age: parseInt(age),

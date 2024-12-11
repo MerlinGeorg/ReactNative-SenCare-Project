@@ -54,7 +54,7 @@ export default function LoginScreen({navigation}) {
       <Text style={styles.title}>Log In</Text>
 
       <TextInput style={styles.input} value={username} onChangeText={setUsername} placeholder='Enter your Email'/>
-      <TextInput style={styles.input} value={password} onChangeText={setPassword} placeholder='Enter the password'/>
+      <TextInput style={styles.input} value={password} onChangeText={setPassword} placeholder='Enter the password' secureTextEntry={true} />
   
       <TouchableOpacity onPress={handleLogin}
       style={[styles.button, {backgroundColor: appThemeColor}]}>

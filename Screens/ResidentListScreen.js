@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   View,
   Alert,
-  TextInput
+  PanResponder
+
 } from "react-native";
 import GradientBackground from '../Styles/GradientBackground';
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -18,6 +19,7 @@ import { appThemeColor } from "../Styles/colors";
 export default function ResidentListScreen({ navigation }) {
   const [patients, setPatients] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showActions, setShowActions] = useState(false);
 
   useEffect(() => {
     fetchPatients();
@@ -74,42 +76,49 @@ export default function ResidentListScreen({ navigation }) {
     );
   };
 
-  const renderItem = ({ item }) => (
+//create a gesture of showing the action icons on dragging the angle-right icon
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onPanResponderMove: (evt, gestureState) => {
+      // Trigger action icons if drag distance exceeds a threshold
+      if (gestureState.dx > -50) { 
+        setShowActions(true);
+      }
+    },
+    
+  });
+  
 
-    <View style={styles.row}>
+  const renderItem = ({ item }) => (
+    <View style={styles.row} {...panResponder.panHandlers}>
       <Text style={styles.column}>{item.name}</Text>
       <Text style={styles.column}>{item.age}</Text>
-      <View style={styles.iconContainer}>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("PatientDetails", { patientId: item._id })
-        }
-      >
-        <Icon name="eye" size={24} color="pink" style={styles.icon} />
-      </TouchableOpacity>
-
-      {/* Edit Icon */}
-      <TouchableOpacity
-        onPress={() => 
-          navigation.navigate("EditPatient", { 
-            patientId: item._id, 
-            refreshPatients: fetchPatients 
-          })
-        }
-      >
-        <Icon name="edit" size={24} color={appThemeColor} style={styles.icon} />
-      </TouchableOpacity>
-
-      {/* Delete Icon */}
-      <TouchableOpacity
-        onPress={() => handleDeletePatient(item._id)}
-      >
-        <Icon name="trash" size={24} color="red" style={styles.icon} />
-      </TouchableOpacity>
-      </View>
+      {showActions ? (
+        <View style={styles.iconContainer}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("PatientDetails", { patientId: item._id })}
+          >
+            <Icon name="eye" size={24} color="green" style={styles.icon} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("EditPatient", { patientId: item._id, refreshPatients: fetchPatients })
+            }
+          >
+            <Icon name="edit" size={24} color={appThemeColor} style={styles.icon} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleDeletePatient(item._id)}
+          >
+            <Icon name="trash" size={24} color="red" style={styles.icon} />
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <Icon name="angle-right" size={20} color='white' />
+      )}
     </View>
-    
   );
+  
 
   const handleAddResident = () => {
     navigation.navigate("NewPatient", {

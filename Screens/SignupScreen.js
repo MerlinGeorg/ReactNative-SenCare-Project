@@ -46,7 +46,7 @@ export default function SignupScreen({navigation}) {
 
       <TextInput style={styles.input} value={name} onChangeText={setName} placeholder='Enter your name' returnKeyType='next'/>
       <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder='Enter your email' />
-      <TextInput style={styles.input} value={password} onChangeText={setPassword} placeholder='Enter Password'/>
+      <TextInput style={styles.input} value={password} onChangeText={setPassword} placeholder='Enter Password' secureTextEntry={true}/>
       <TextInput style={styles.input} value={confirmPassword} onChangeText={setConfirmPassword} placeholder='Re-enter the password' />
      
 

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { appThemeColor } from "../Styles/colors";
 
 const NewPatientRecordScreen = ({ route, navigation }) => {
  // const { patientId, onAddRecord } = route.params || {}; // Receiving the patientId and callback
@@ -98,7 +99,7 @@ const NewPatientRecordScreen = ({ route, navigation }) => {
         onChangeText={setReadingValue}
         style={styles.input}
       />
-      <Button title="Save" onPress={handleSubmit} />
+      <Button title="Save" onPress={handleSubmit} color={appThemeColor}/>
     </View>
   );
 };

@@ -6,7 +6,7 @@ import { StyleSheet } from 'react-native';
 const GradientBackground = ({ children }) => {
   return (
     <LinearGradient
-      colors={['orange', 'blue']}
+      colors={['orange', 'pink']}
       style={styles.gradient}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
