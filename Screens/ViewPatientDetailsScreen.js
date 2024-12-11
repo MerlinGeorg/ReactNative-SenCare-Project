@@ -10,7 +10,7 @@ const PatientDetailsScreen = ({ route, navigation }) => {
   useEffect(() => {
     const fetchPatientDetails= async()=> {
       try{
-        await fetch(`https://9f9b-2607-fea8-33dc-6900-ecd6-7728-6116-2d6c.ngrok-free.app/api/patient/fetch/${patientId}`).then(response=>response.json()).then(data=>{
+        await fetch(`https://mycentennialtestdeploymentapp-bjandcdgcscmgpbu.canadacentral-01.azurewebsites.net/api/patient/fetch/${patientId}`).then(response=>response.json()).then(data=>{
              // console.log(data)
           setPatient(data)
         })
@@ -37,11 +37,11 @@ const PatientDetailsScreen = ({ route, navigation }) => {
       />
 
       <Text style={styles.header}>{patient.name}</Text>
-      <Text>Age: {patient.age}</Text>
-      <Text>Health Status: {patient.health_status}</Text>
-      <Text>Admission Date: { moment(patient.admission_date).format("MM/DD/YYYY") }</Text>
-      <Text>Admission Number: {patient.admission_number}</Text>
-      <Text>Room Number: {patient.room_number}</Text>
+      <Text style={styles.patientData}>Age: {patient.age}</Text>
+      <Text style={styles.patientData}>Health Status: {patient.health_status}</Text>
+      <Text style={styles.patientData}>Admission Date: { moment(patient.admission_date).format("MM/DD/YYYY") }</Text>
+      <Text style={styles.patientData}>Admission Number: {patient.admission_number}</Text>
+      <Text style={styles.patientData}>Room Number: {patient.room_number}</Text>
 
       <Text style={styles.sectionHeader}>Health Conditions: {patient.health_conditions}</Text>
 
@@ -59,13 +59,16 @@ const styles = StyleSheet.create({
   container: { padding: 16 },
   header: { fontSize: 24, fontWeight: 'bold', marginBottom: 16 },
   sectionHeader: { fontSize: 18, marginTop: 20, fontWeight: 'bold' },
-  link: { color: 'blue', marginTop: 20, textDecorationLine: 'underline'},
+  link: { color: 'blue', marginTop: 20, textDecorationLine: 'underline', fontSize: 18},
   patientImage: {
     width: 100, 
     height: 100, 
     marginBottom: 16,
     borderRadius: 50, // Optional: for making the image circular
   },
+  patientData: {
+    fontSize: 18
+  }
 });
 
 export default PatientDetailsScreen;

@@ -1,22 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   TextInput,
-  Button,
   StyleSheet,
   TouchableOpacity,
   Image,
-  Platform,
-  PermissionsAndroid
 } from "react-native";
 import { RadioButton } from "react-native-paper";
 import axios from "axios";
-//import { launchImageLibrary } from "react-native-image-picker";
-import * as ImagePicker from 'expo-image-picker';
+import { launchImageLibrary } from "react-native-image-picker";
 import { appThemeColor } from "../Styles/colors";
 
-export default function AddNewPatientScreen({ route, navigation }) {
+export default function EditPatientDetailsScreen({ route, navigation }) {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [healthStatus, setHealthStatus] = useState("");
@@ -24,79 +20,90 @@ export default function AddNewPatientScreen({ route, navigation }) {
   const [roomNumber, setRoomNumber] = useState("");
   const [photo, setPhoto] = useState(null);
 
-  const { refreshPatients } = route.params;
+//   const { refreshPatients } = route.params;
+//   const patientId = route.params.patientId;
+
+const { patientId, refreshPatients } = route.params;
+
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
+        const response = await fetch(`https://mycentennialtestdeploymentapp-bjandcdgcscmgpbu.canadacentral-01.azurewebsites.net/api/patient/fetch/${patientId}`);
+        
+        const data = await response.json();
+        //console.log(data)
+        setName(data.name);
+        setAge(data.age.toString());
+        setHealthStatus(data.health_status);
+        setHealthConditions(data.health_conditions);
+        setRoomNumber(data.room_number.toString());
+        if (data.photo) {
+          setPhoto({ uri: data.photo });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchPatientDetails();
+  }, [patientId]);
 
   const handleSave = async () => {
-    const newPatient = {
+    const updatedPatient = {
       name,
       age: parseInt(age),
       health_status: healthStatus,
       health_conditions: healthConditions,
       photo: photo ? photo.uri : null,
-      admission_date: new Date(), // Set the admission date to the current date
-      admission_number: `${Math.floor(Math.random() * 100000)}`,
       room_number: parseInt(roomNumber),
     };
 
-    //console.log(newPatient);
-
     try {
-      const response = await axios.post(
-        "https://mycentennialtestdeploymentapp-bjandcdgcscmgpbu.canadacentral-01.azurewebsites.net/api/patient/create",
-        newPatient
+      const response = await axios.put(
+        `https://mycentennialtestdeploymentapp-bjandcdgcscmgpbu.canadacentral-01.azurewebsites.net/api/patient/update/${patientId}`,
+        updatedPatient
       );
       if (response.status === 200) {
         console.log(response.data);
-        alert("Patient Saved!");
+        alert("Patient Details Updated!");
         refreshPatients();
         navigation.goBack();
       } else {
         console.error("Unexpected response status:", response.status);
-        alert("Failed to save patient data. Please try again.");
+        alert("Failed to update patient data. Please try again.");
       }
     } catch (error) {
-      // If error has a response (HTTP error)
       if (error.response) {
-        console.error("Error from backend:", error.response.data); // Log the backend response
-        console.error("Error status:", error.response.status); // Log the status code
+        console.error("Error from backend:", error.response.data);
+        console.error("Error status:", error.response.status);
       } else {
-        console.error("Network or other error:", error); // If no response, log the general error
+        console.error("Network or other error:", error);
       }
-
-      alert("Failed to save patient data. Please try again.");
+      alert("Failed to update patient data. Please try again.");
     }
   };
 
   const choosePhoto = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Sorry, we need camera roll permissions to make this work!');
-      return;
-    }
-  
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
+    launchImageLibrary({ mediaType: "photo", quality: 0.5 }, (response) => {
+      if (response.didCancel) {
+        console.log("User canceled image picker");
+      } else if (response.errorCode) {
+        console.log("ImagePicker Error: ", response.errorMessage);
+      } else {
+        setPhoto(response.assets[0]);
+      }
     });
-  
-    if (!result.canceled && result.assets && result.assets.length > 0) {
-      setPhoto(result.assets[0]);
-    }
   };
-  
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Add New Patient</Text>
+      <Text style={styles.title}>Edit Patient Details</Text>
 
       <Text>Name</Text>
       <TextInput
         style={styles.input}
         value={name}
         onChangeText={setName}
-        placeholder="Enter Name"
       />
 
       <Text>Age</Text>
@@ -104,7 +111,6 @@ export default function AddNewPatientScreen({ route, navigation }) {
         style={styles.input}
         value={age}
         onChangeText={setAge}
-        placeholder="Enter Age"
         keyboardType="numeric"
       />
 
@@ -130,7 +136,6 @@ export default function AddNewPatientScreen({ route, navigation }) {
         style={styles.textArea}
         value={healthConditions}
         onChangeText={setHealthConditions}
-        placeholder="Describe previous medical issues history"
         multiline={true}
         numberOfLines={4}
       />
@@ -140,7 +145,6 @@ export default function AddNewPatientScreen({ route, navigation }) {
         style={styles.input}
         value={roomNumber}
         onChangeText={setRoomNumber}
-        placeholder="Enter Room Number"
         keyboardType="numeric"
       />
 
@@ -151,7 +155,7 @@ export default function AddNewPatientScreen({ route, navigation }) {
 
       {photo && (
         <View style={styles.imagePreview}>
-          <Text>Selected Photo:</Text>
+          <Text>Current Photo:</Text>
           <Image source={{ uri: photo.uri }} style={styles.image} />
         </View>
       )}
@@ -196,10 +200,8 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     backgroundColor: appThemeColor,
-    paddingVertical: 8, // Adjusted padding for a snug fit
-    paddingHorizontal: 16,
+    paddingVertical: 12,
     borderRadius: 4,
-    alignSelf: 'center'
   },
   saveButtonText: {
     color: "#fff",
@@ -225,6 +227,6 @@ const styles = StyleSheet.create({
   radioButton: {
     flexDirection: "row",
     alignItems: "center",
-    marginRight: 16, // Adds space between the radio buttons
+    marginRight: 16,
   },
 });

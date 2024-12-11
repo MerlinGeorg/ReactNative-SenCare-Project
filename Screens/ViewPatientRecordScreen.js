@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, FlatList, Button } from "react-native";
 import { useState, useEffect, useCallback } from "react";
 import moment from "moment";
 import { useFocusEffect } from '@react-navigation/native';
+import { appThemeColor } from "../Styles/colors";
 
 export default function ViewPatientRecordScreen({ route, navigation }) {
   const { patientId } = route.params;
@@ -9,7 +10,7 @@ export default function ViewPatientRecordScreen({ route, navigation }) {
 
   const fetchClinicalData = async () => {
     try {
-      const response = await fetch(`https://9f9b-2607-fea8-33dc-6900-ecd6-7728-6116-2d6c.ngrok-free.app/api/patient/fetch/${patientId}/clinical-data`);
+      const response = await fetch(`https://mycentennialtestdeploymentapp-bjandcdgcscmgpbu.canadacentral-01.azurewebsites.net/api/patient/fetch/${patientId}/clinical-data`);
       const data = await response.json();
     //  console.log(data);
       setClinicalData(data);  // Update the state with the new data
@@ -98,6 +99,7 @@ export default function ViewPatientRecordScreen({ route, navigation }) {
           })
         }
        title="Add New Patient Record"
+       color={appThemeColor}
       >
       </Button>
     </View>
